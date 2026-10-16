@@ -4,7 +4,7 @@ namespace FootballClubManager.Players;
 public abstract class Player
 {
     public string Name { get; }
-    public int Health { get; protected set; }
+    public virtual string PositionName => GetType().Name;    public int Health { get; protected set; }
     public int Defense { get; protected set; }
     public int Speed { get; protected set; }
     public int Strength { get; protected set; }
@@ -36,10 +36,11 @@ public abstract class Player
         Console.WriteLine($"{Name}: Ready to play!");
     }
 
+    
     public virtual void PrintDetails()
     {
         Console.WriteLine($"\n--- {Name} ---");
-        Console.WriteLine($"Position: {GetType().Name}");
+        Console.WriteLine($"Position: {PositionName}");
         Console.WriteLine($"Health: {Health}");
         Console.WriteLine($"Defense: {Defense}");
         Console.WriteLine($"Speed: {Speed}");
@@ -47,4 +48,5 @@ public abstract class Player
         Console.WriteLine($"Intellect: {Intellect}");
         Console.WriteLine($"Agility: {Agility}");
     }
+
 }

@@ -7,6 +7,8 @@ public abstract class PlayerDecorator : Player
 {
     protected Player BasePlayer { get; }
 
+    public override string PositionName => BasePlayer.PositionName;
+
     protected PlayerDecorator(Player player)
         : base(
             player.Name,
@@ -30,8 +32,9 @@ public abstract class PlayerDecorator : Player
         BasePlayer.Speak();
     }
 
+    // Print this decorator's stats, which include its bonuses.
     public override void PrintDetails()
     {
-        BasePlayer.PrintDetails();
+        base.PrintDetails();
     }
 }

@@ -14,6 +14,19 @@ public sealed class Equipment
         int defenseBonus,
         decimal price)
     {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException(
+                "Equipment must have a name.", nameof(name));
+        }
+
+        if (strengthBonus < 0 || defenseBonus < 0 || price <= 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(price),
+                "Bonuses cannot be negative and price must be positive.");
+        }
+
         Name = name;
         StrengthBonus = strengthBonus;
         DefenseBonus = defenseBonus;

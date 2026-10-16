@@ -74,4 +74,35 @@ public sealed class InventoryFacade
     {
         _inventoryService.PrintInventory();
     }
+
+    public bool EquipItem(
+        string equipmentName,
+        FootballClubManager.Players.Player player)
+        {
+            ArgumentNullException.ThrowIfNull(player);
+
+            Equipment? equipment = _inventoryService.Find(equipmentName);
+
+            if (equipment is null)
+            {
+                Console.WriteLine("Equipment not found in club inventory.");
+                return false;
+            }
+
+            if (player.EquippedItems.Any(item =>
+                item.Name.Equals(
+                    equipment.Name,
+                    StringComparison.OrdinalIgnoreCase)))
+            {
+                Console.WriteLine("This player already has that equipment.");
+                return false;
+            }
+
+            player.EquippedItems.Add(equipment);
+            _inventoryService.Remove(equipment.Name);
+
+            Console.WriteLine($"{equipment.Name} equipped by {player.Name}.");
+            return true;
+    }
+
 }

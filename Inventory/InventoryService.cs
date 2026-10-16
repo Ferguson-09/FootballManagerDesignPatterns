@@ -12,12 +12,17 @@ public sealed class InventoryService
         _items.Add(equipment);
     }
 
-    public bool Remove(string equipmentName)
+    public Equipment? Find(string equipmentName)
     {
-        Equipment? item = _items.FirstOrDefault(
-            item => item.Name.Equals(
+        return _items.FirstOrDefault(item =>
+            item.Name.Equals(
                 equipmentName,
                 StringComparison.OrdinalIgnoreCase));
+    }
+
+    public bool Remove(string equipmentName)
+    {
+        Equipment? item = Find(equipmentName);
 
         if (item is null)
         {

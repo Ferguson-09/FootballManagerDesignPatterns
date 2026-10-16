@@ -34,27 +34,41 @@ public sealed class InventoryFacade
         return true;
     }
 
+    
     public bool SellEquipment(string equipmentName, decimal salePrice)
     {
-        if (salePrice < 0)
+        if (salePrice <= 0)
         {
-            Console.WriteLine("Sale price cannot be negative.");
+            Console.WriteLine("Sale price must be greater than zero.");
             return false;
         }
 
-        if (!_inventoryService.Remove(equipmentName))
+        GameWorld world = GameWorld.Instance;
+
+        // Confirm the equipment exists before changing club funds.
+        if (!_inventoryService.Items.Any(item =>
+            item.Name.Equals(
+                equipmentName,
+                StringComparison.OrdinalIgnoreCase)))
         {
             Console.WriteLine("Equipment not found.");
             return false;
         }
 
-        // The current GameWorld API only supports spending funds.
-        // We'll add a safe deposit method in the next integration step.
+        if (!_inventoryService.Remove(equipmentName))
+        {
+            Console.WriteLine("Sale failed.");
+            return false;
+        }
+
+        world.AddFunds(salePrice);
+
         Console.WriteLine(
-            $"Removed {equipmentName} from inventory. " +
-            $"Sale proceeds of ${salePrice:N2} are not yet credited.");
+            $"Sold {equipmentName} for ${salePrice:N2}.");
+
         return true;
     }
+
 
     public void ShowInventory()
     {

@@ -12,17 +12,17 @@ public sealed class GameWorld
 
     public decimal ClubFunds { get; private set; } = 100_000m;
 
-    public int MatchMinute { get; private set; } = 0;
+    public int MatchMinute { get; private set; }
 
     public List<Player> Squad { get; } = new();
 
-    // Private constructor prevents other classes from creating instances.
     private GameWorld()
     {
     }
 
     public void AddPlayer(Player player)
     {
+        ArgumentNullException.ThrowIfNull(player);
         Squad.Add(player);
     }
 
@@ -34,6 +34,17 @@ public sealed class GameWorld
         }
 
         ClubFunds -= amount;
+        return true;
+    }
+
+    public bool AddFunds(decimal amount)
+    {
+        if (amount <= 0)
+        {
+            return false;
+        }
+
+        ClubFunds += amount;
         return true;
     }
 
